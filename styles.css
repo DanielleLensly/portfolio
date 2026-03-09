@@ -12,10 +12,20 @@ html {
     overflow-x: hidden;
 }
 
-/* Fix for Dark Reader extension over-darkening a natively dark site */
+/* Fix for Dark Reader extension over-darkening and breaking gradients */
 [data-darkreader-scheme] {
     --bg-primary: hsl(260, 30%, 8%) !important;
     --text-primary: hsl(0, 0%, 95%) !important;
+}
+
+[data-darkreader-scheme] .gradient-text,
+[data-darkreader-scheme] .stat-number,
+[data-darkreader-scheme] .section-title::after {
+    background-image: var(--gradient-primary) !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-color: transparent !important;
 }
 
 body {
@@ -108,10 +118,10 @@ p {
 }
 
 .gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: var(--gradient-primary) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
     color: var(--primary-light); /* Fallback for accessibility extensions */
 }
 
@@ -523,10 +533,10 @@ p {
     display: block;
     font-size: 3rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: var(--gradient-primary) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
     color: var(--primary-light); /* Fallback for accessibility extensions */
     margin-bottom: 0.5rem;
 }
