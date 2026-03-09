@@ -43,26 +43,42 @@ function highlightNavigation() {
     const scrollY = window.pageYOffset;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
+    const viewportCenter = scrollY + (windowHeight / 2);
     
-    // If at the bottom, select the last section (Contact)
+    // 1. Handle bottom of page strictly
     if (scrollY + windowHeight >= documentHeight - 50) {
-        navLinkItems.forEach(link => link.classList.remove('active'));
-        const lastLink = document.querySelector('.nav-link[href="#contact"]');
-        if (lastLink) lastLink.classList.add('active');
+        setActiveLink('#contact');
         return;
     }
 
+    // 2. Handle top of page (Home)
+    if (scrollY < 100) {
+        setActiveLink('#home');
+        return;
+    }
+
+    // 3. Find section that contains the center of the viewport
+    let currentSectionId = '';
     sections.forEach(section => {
+        const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 150;
-        const sectionId = section.getAttribute('id');
-        const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
         
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-            navLinkItems.forEach(link => link.classList.remove('active'));
-            if (navLink) {
-                navLink.classList.add('active');
-            }
+        if (viewportCenter >= sectionTop && viewportCenter <= sectionTop + sectionHeight) {
+            currentSectionId = `#${section.getAttribute('id')}`;
+        }
+    });
+
+    if (currentSectionId) {
+        setActiveLink(currentSectionId);
+    }
+}
+
+function setActiveLink(id) {
+    navLinkItems.forEach(link => {
+        if (link.getAttribute('href') === id) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
         }
     });
 }
