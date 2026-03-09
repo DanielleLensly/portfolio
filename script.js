@@ -265,6 +265,13 @@ const sliderDotsContainer = document.getElementById('sliderDots');
 if (projectsSlider) {
     const projectCards = projectsSlider.querySelectorAll('.project-card');
     const gap = 32; // match var(--spacing-md) which is 2rem (approx 32px)
+
+    const checkScrollability = () => {
+        const isScrollable = projectsSlider.scrollWidth > projectsSlider.clientWidth + 5; // offset for browser variations
+        sliderDotsContainer.style.display = isScrollable ? 'flex' : 'none';
+        prevProjectBtn.style.display = isScrollable ? 'flex' : 'none';
+        nextProjectBtn.style.display = isScrollable ? 'flex' : 'none';
+    };
     
     // Create dots
     projectCards.forEach((_, index) => {
@@ -299,6 +306,7 @@ if (projectsSlider) {
     };
 
     projectsSlider.addEventListener('scroll', updateDots);
+    window.addEventListener('resize', checkScrollability);
     
     // Next/Prev Buttons with Looping
     nextProjectBtn.addEventListener('click', () => {
@@ -325,6 +333,7 @@ if (projectsSlider) {
         }
     });
 
-    // Initial dot update
+    // Initial dot update and scrollability check
     updateDots();
+    checkScrollability();
 }
