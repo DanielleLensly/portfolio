@@ -266,33 +266,40 @@ if (projectsSlider) {
     const projectCards = projectsSlider.querySelectorAll('.project-card');
     const gap = 32; // match var(--spacing-md) which is 2rem (approx 32px)
 
+    const createDots = () => {
+        sliderDotsContainer.innerHTML = '';
+        const cardWidth = projectCards[0].offsetWidth;
+        const visibleCards = Math.round(projectsSlider.clientWidth / (cardWidth + gap)) || 1;
+        const totalScrollStops = projectCards.length - visibleCards + 1;
+        
+        // Don't show dots if everything fits
+        if (totalScrollStops <= 1) return;
+
+        for (let i = 0; i < totalScrollStops; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('slider-dot');
+            if (i === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                const scrollLeft = i * (cardWidth + gap);
+                projectsSlider.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+            });
+            
+            sliderDotsContainer.appendChild(dot);
+        }
+    };
+
     const checkScrollability = () => {
-        const isScrollable = projectsSlider.scrollWidth > projectsSlider.clientWidth + 5; // offset for browser variations
+        const isScrollable = projectsSlider.scrollWidth > projectsSlider.clientWidth + 5;
         sliderDotsContainer.style.display = isScrollable ? 'flex' : 'none';
         prevProjectBtn.style.display = isScrollable ? 'flex' : 'none';
         nextProjectBtn.style.display = isScrollable ? 'flex' : 'none';
+        createDots(); // Recalculate dots on resize/scrollable check
     };
-    
-    // Create dots
-    projectCards.forEach((_, index) => {
-        const dot = document.createElement('div');
-        dot.classList.add('slider-dot');
-        if (index === 0) dot.classList.add('active');
-        
-        dot.addEventListener('click', () => {
-            const cardWidth = projectCards[0].offsetWidth;
-            const scrollLeft = index * (cardWidth + gap);
-            projectsSlider.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-        });
-        
-        sliderDotsContainer.appendChild(dot);
-    });
 
     const updateDots = () => {
         const scrollPosition = projectsSlider.scrollLeft;
         const cardWidth = projectCards[0].offsetWidth;
-        
-        // Find the index of the most visible card
         const currentIndex = Math.round(scrollPosition / (cardWidth + gap));
         
         const dots = sliderDotsContainer.querySelectorAll('.slider-dot');
@@ -313,7 +320,6 @@ if (projectsSlider) {
         const cardWidth = projectCards[0].offsetWidth;
         const maxScroll = projectsSlider.scrollWidth - projectsSlider.clientWidth;
         
-        // If we're at or near the end, loop to start
         if (projectsSlider.scrollLeft >= maxScroll - 10) {
             projectsSlider.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
