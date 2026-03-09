@@ -41,10 +41,20 @@ const sections = document.querySelectorAll('section[id]');
 
 function highlightNavigation() {
     const scrollY = window.pageYOffset;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
     
+    // If at the bottom, select the last section (Contact)
+    if (scrollY + windowHeight >= documentHeight - 50) {
+        navLinkItems.forEach(link => link.classList.remove('active'));
+        const lastLink = document.querySelector('.nav-link[href="#contact"]');
+        if (lastLink) lastLink.classList.add('active');
+        return;
+    }
+
     sections.forEach(section => {
         const sectionHeight = section.offsetHeight;
-        const sectionTop = section.offsetTop - 100;
+        const sectionTop = section.offsetTop - 150;
         const sectionId = section.getAttribute('id');
         const navLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
         
