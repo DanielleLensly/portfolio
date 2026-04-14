@@ -343,3 +343,31 @@ if (projectsSlider) {
     updateDots();
     checkScrollability();
 }
+
+// ===================================
+// READ MORE FUNCTIONALITY
+// ===================================
+const readMoreBtns = document.querySelectorAll('.read-more-btn');
+
+readMoreBtns.forEach(btn => {
+    const card = btn.closest('.project-card');
+    const description = card.querySelector('.project-description');
+    
+    // Check if description is long enough to need a "Read More"
+    // (using a small timeout to ensure cards are rendered)
+    setTimeout(() => {
+        if (description.scrollHeight > description.clientHeight) {
+            btn.style.display = 'inline-block';
+        } else {
+            btn.style.display = 'none';
+        }
+    }, 500);
+    
+    btn.addEventListener('click', () => {
+        const isExpanded = card.classList.toggle('expanded');
+        btn.textContent = isExpanded ? 'Show Less' : 'Read More';
+        
+        // Refresh slider positioning if needed
+        window.dispatchEvent(new Event('resize'));
+    });
+});

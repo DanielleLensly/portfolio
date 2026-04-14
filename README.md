@@ -38,9 +38,8 @@ Portfolio/
 ├── styles.css          # Complete CSS design system
 ├── script.js           # Interactive JavaScript
 ├── avatar.jpg          # Profile image
-├── project1.jpg        # E-commerce project screenshot
-├── project2.jpg        # Task manager project screenshot
-└── project3.jpg        # Weather app project screenshot
+├── project1.jpg        # Project screenshot
+├── project2.jpg        # Project screenshot
 ```
 
 ## Customization
